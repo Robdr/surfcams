@@ -17,14 +17,14 @@
         body {
             margin: 0;
             padding: 0;
-            min-height: 100dvh; 
+            min-height: 100dvh; /* Allows scrolling if content gets too tall, but ensures at least full screen */
             background-color: var(--bg-color);
             color: var(--text-color);
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             -webkit-font-smoothing: antialiased;
             display: flex;
             flex-direction: column;
-            overflow-x: hidden; /* Prevent horizontal scroll, allow vertical */
+            overflow-x: hidden; 
         }
 
         /* --- HEADER & DASHBOARD SELECTOR --- */
@@ -61,29 +61,41 @@
         /* --- DYNAMIC CSS GRID --- */
         .camera-grid {
             display: grid;
+            flex-grow: 1; /* Forces grid to stretch vertically into the empty space */
             gap: 12px;
-            padding: 0 12px calc(env(safe-area-inset-bottom) + 20px) 12px;
+            padding: 0 12px calc(env(safe-area-inset-bottom) + 12px) 12px;
             box-sizing: border-box;
             max-width: 1200px;
             margin: 0 auto;
             width: 100%;
-            align-content: start; /* Prevents stretching if screen is tall */
         }
 
-        /* Base Portrait Grid Configurations */
-        .camera-grid[data-count="1"] { grid-template-columns: 1fr; }
-        .camera-grid[data-count="2"] { grid-template-columns: 1fr; }
-        /* Default for 3 or more cameras in portrait */
-        .camera-grid { grid-template-columns: repeat(2, 1fr); } 
+        /* Portrait Configurations: Perfectly slice vertical space using 1fr */
+        .camera-grid[data-count="1"] { grid-template-columns: 1fr; grid-template-rows: 1fr; }
+        .camera-grid[data-count="2"] { grid-template-columns: 1fr; grid-template-rows: repeat(2, 1fr); }
+        .camera-grid[data-count="3"], 
+        .camera-grid[data-count="4"] { grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(2, 1fr); }
+        .camera-grid[data-count="5"], 
+        .camera-grid[data-count="6"] { grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(3, 1fr); }
+        
+        /* For 7+ cameras, stretch them, but if they squish below 18% screen height, allow scrolling */
+        .camera-grid[data-count="7"], 
+        .camera-grid[data-count="8"] { grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(4, minmax(18dvh, 1fr)); }
+        .camera-grid[data-count="9"], 
+        .camera-grid[data-count="10"] { grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(5, minmax(18dvh, 1fr)); }
 
-        /* Hardware-Level Landscape Grid Adjustments */
+        /* Landscape Configurations: Instantly triggers when rotating the phone */
         @media (orientation: landscape) {
-            .camera-grid[data-count="1"] { grid-template-columns: 1fr; }
-            .camera-grid[data-count="2"] { grid-template-columns: repeat(2, 1fr); }
-            .camera-grid[data-count="3"], .camera-grid[data-count="4"] { grid-template-columns: repeat(2, 1fr); }
-            .camera-grid[data-count="5"], .camera-grid[data-count="6"] { grid-template-columns: repeat(3, 1fr); }
-            .camera-grid[data-count="7"], .camera-grid[data-count="8"], 
-            .camera-grid[data-count="9"], .camera-grid[data-count="10"] { grid-template-columns: repeat(4, 1fr); }
+            .camera-grid[data-count="1"] { grid-template-columns: 1fr; grid-template-rows: 1fr; }
+            .camera-grid[data-count="2"] { grid-template-columns: repeat(2, 1fr); grid-template-rows: 1fr; }
+            .camera-grid[data-count="3"], 
+            .camera-grid[data-count="4"] { grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(2, 1fr); }
+            .camera-grid[data-count="5"], 
+            .camera-grid[data-count="6"] { grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, 1fr); }
+            .camera-grid[data-count="7"], 
+            .camera-grid[data-count="8"] { grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(2, 1fr); }
+            .camera-grid[data-count="9"], 
+            .camera-grid[data-count="10"] { grid-template-columns: repeat(5, 1fr); grid-template-rows: repeat(2, 1fr); }
         }
 
         .camera-card {
@@ -96,13 +108,12 @@
             justify-content: center;
             cursor: pointer;
             transition: opacity 0.2s ease;
-            aspect-ratio: 16 / 9; /* Ensures videos always stay perfectly proportioned */
         }
 
         video {
             width: 100%;
             height: 100%;
-            object-fit: cover; 
+            object-fit: cover; /* Safely crops edges to keep proportion while filling the rectangle */
             background-color: #000;
             pointer-events: none;
         }
@@ -140,7 +151,7 @@
         /* --- FULL SCREEN MODE STYLES --- */
         body.fullscreen-mode { 
             background-color: #000; 
-            overflow: hidden; /* Lock background scrolling when in fullscreen */
+            overflow: hidden; 
         }
         body.fullscreen-mode .header { display: none; }
         body.fullscreen-mode .camera-card:not(.active-fullscreen) { display: none; }
@@ -152,13 +163,12 @@
             width: 100vw;
             height: 100dvh;
             border-radius: 0;
-            aspect-ratio: auto; /* Remove 16:9 ratio to fill the actual screen */
             z-index: 999;
             cursor: default;
         }
 
         .camera-card.active-fullscreen video {
-            object-fit: contain; 
+            object-fit: contain; /* Switches to seeing the whole raw video un-cropped */
         }
 
         #back-btn {
@@ -241,7 +251,7 @@
 
             const dashboardCameras = dashboard.cameras.sort((a, b) => a.sortorder - b.sortorder);
             
-            // Set data attribute so CSS handles the orientation grid mathematically
+            // Set data attribute so CSS handles the orientation math automatically
             grid.setAttribute('data-count', dashboardCameras.length);
 
             dashboardCameras.forEach((dashCam, index) => {
@@ -273,7 +283,6 @@
 
                 card.addEventListener('click', () => {
                     if (document.body.classList.contains('fullscreen-mode')) return;
-                    // Removed window.scrollTo(0,0) so user doesn't lose scroll position!
                     document.body.classList.add('fullscreen-mode');
                     card.classList.add('active-fullscreen');
                 });
