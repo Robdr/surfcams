@@ -51,7 +51,6 @@
             outline: none;
             cursor: pointer;
             box-shadow: 0 2px 6px rgba(0,0,0,0.4);
-            /* Custom drop-down arrow */
             background-image: url('data:image/svg+xml;utf8,<svg fill="%23ffffff" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
             background-repeat: no-repeat;
             background-position: right 8px center;
@@ -59,15 +58,11 @@
             text-align: center;
         }
 
-        select:active {
-            opacity: 0.8;
-        }
-
         /* --- DYNAMIC GRID --- */
         .camera-grid {
             display: grid;
             flex-grow: 1; 
-            /* Variables injected by JS based on camera count */
+            /* Variables injected by JS dynamically on rotation */
             grid-template-columns: repeat(var(--cols, 2), 1fr);
             grid-template-rows: repeat(var(--rows, 3), 1fr); 
             gap: 10px;
@@ -88,10 +83,6 @@
             justify-content: center;
             cursor: pointer;
             transition: opacity 0.2s ease;
-        }
-
-        .camera-card:active {
-            opacity: 0.8;
         }
 
         video {
@@ -193,13 +184,9 @@
         // Full Configuration from User JSON
         const config = {"schemaVersion":2,"dashboards":[{"layout":{"focusCameraOnMotion":false,"cycleTime":5,"layout":"automatic","customLayout":[]},"hideControls":false,"cameras":[{"camera":"12305CCB-C047-4DBF-B880-491BC1849716","aspect":"Stretch","sortorder":0,"id":"A2B8AB27-90BD-4958-8834-5BAD22139BB1","profile":"automatic"},{"sortorder":1,"id":"F7785CCD-1CEE-4DC9-A2A8-A361B4BCBD08","profile":"automatic","camera":"DC2285C8-F581-4D2B-8E90-E609C364B215","aspect":"Stretch"},{"sortorder":2,"id":"F637307A-7116-4CA5-A8BC-9261FD458AC1","camera":"9A5A8D36-54E2-455B-A600-3EB6E5EE60A1","profile":"automatic","aspect":"Stretch"},{"aspect":"Stretch","camera":"0B8D9B41-B65B-4A29-881A-C488686C8A6F","sortorder":3,"id":"B3E62C30-1F46-453E-AC1E-54B49F41DE7D","profile":"automatic"},{"id":"2314CD11-AA19-4F8E-9674-1D0EBB98770C","aspect":"Stretch","profile":"automatic","camera":"E72D63FD-8F06-4FAC-9B6E-DDBC51325123","sortorder":4}],"disableAudio":true,"iconName":"dashboard1","expanded":true,"id":"F2693DE1-7557-41DD-A2E9-B91CE42652CB","isFavorite":false,"name":"Alentejo","audioType":"muteUnlessFocused"},{"name":"Alentejo other","iconName":"dashboard1","isFavorite":false,"disableAudio":true,"expanded":false,"cameras":[{"id":"E0D8464F-3C96-49DB-9D9D-0899231190AD","sortorder":0,"profile":"automatic","aspect":"Stretch","camera":"6A179F9B-8AB9-440B-AA0F-FF1AD8996853"},{"camera":"4DF691A6-7EA8-416A-9E95-26A2BB0D24A9","id":"9A3397DA-FA87-442C-8F23-26D8A1C1AB01","aspect":"Stretch","sortorder":1,"profile":"automatic"},{"id":"55F9B5D6-A1CF-48FC-A415-F31BB21A9300","profile":"automatic","camera":"0D4AC153-DA92-42C3-A5C0-55E2ED8DDCCF","sortorder":2,"aspect":"Stretch"}],"id":"46C16C07-84A9-4E59-B114-9693D0FD6EB9","hideControls":false,"audioType":"muteUnlessFocused"},{"hideControls":false,"expanded":true,"disableAudio":true,"iconName":"dashboard1","name":"Aljezur","cameras":[{"camera":"655394D3-CCFA-4E9C-BA58-F6A511084C09","aspect":"Stretch","id":"683DB11D-328E-4937-AC79-1E8E93EE2B8C","profile":"automatic","sortorder":0},{"sortorder":1,"aspect":"Stretch","id":"C78C6D9D-893A-407C-8E82-B5D28606472B","camera":"0C610800-FDB2-4248-ABF1-133CD3884D6E","profile":"automatic"},{"sortorder":2,"camera":"8A638D09-3F7C-480E-AD73-144E9ABAF0B6","aspect":"Stretch","id":"3B5FFB3F-C8E7-4924-8C79-B0D94ADE5C7E","profile":"automatic"},{"aspect":"Stretch","id":"A193312C-D38C-4D32-ABB3-1756EE735ECB","camera":"8E327046-B697-4EDA-953B-5F03A6638E1B","profile":"automatic","sortorder":3},{"aspect":"Stretch","id":"650A3349-48EC-43BB-8032-44C70763467A","camera":"E7422E5E-5D98-48CA-9D8B-DEF9FB4BC854","profile":"automatic","sortorder":4},{"aspect":"Stretch","id":"D7B0AFBA-C5C7-4BD4-A254-81F144A4503B","sortorder":5,"camera":"39F770A1-231C-483C-B0FC-C61E94250970","profile":"automatic"}],"id":"35DB1380-7A20-46F6-93F3-2048F3975C86","audioType":"alwaysMuted","layout":{"customLayout":[],"focusCameraOnMotion":false,"layout":"automatic","cycleTime":5},"isFavorite":false},{"isFavorite":false,"cameras":[{"camera":"EEE4FF31-19A2-4CA4-8329-DCF380AD3E29","id":"F683E3C5-2DC7-4F25-9634-D6F90B257CF5","profile":"automatic","sortorder":0,"aspect":"Stretch"},{"profile":"automatic","sortorder":1,"camera":"27DAEE32-4680-422F-95CE-9E0C23040636","aspect":"Stretch","id":"F0344B13-5F2B-4A7D-9D82-FF2C9BA87DD9"},{"aspect":"Zoom","camera":"434E01FF-9F2E-4036-9841-F7378D80EC4D","profile":"automatic","id":"7016FCBA-2664-4F0E-91B6-FD3E57E83EEC","sortorder":2},{"sortorder":3,"aspect":"Stretch","id":"1EAC5B59-5E0D-46DD-BFD8-20AB7B08ADDF","camera":"5EB49725-71D8-4588-BE78-3D958E916713","profile":"automatic"}],"id":"A698D6AB-268C-4634-9723-7B26A1943224","audioType":"alwaysMuted","expanded":true,"iconName":"outside3","layout":{"customLayout":[],"layout":"automatic","cycleTime":5,"focusCameraOnMotion":false},"name":"South","disableAudio":true,"hideControls":false},{"iconName":"outside4","cameras":[{"aspect":"Zoom","id":"A9A2ECFB-171F-4F96-B5D4-477F5D208414","camera":"223E668D-91BE-4899-8C92-CC6DA5F35AFE","sortorder":0,"profile":"automatic"},{"id":"22832B1D-B68E-4A9C-A42D-B694EC0F27DC","camera":"2A6E958F-9FC9-4B12-A046-AB2943B626C8","sortorder":1,"aspect":"Zoom","profile":"automatic"},{"aspect":"Zoom","profile":"automatic","id":"EAF0CB61-8EDA-459F-A69D-D0558DC29CF6","sortorder":2,"camera":"9810D08B-24AE-4B4A-8F67-885D3A0C6531"},{"profile":"automatic","aspect":"Zoom","sortorder":3,"id":"CAFCB4C7-E928-4BC1-AA78-135D75B3B99F","camera":"A670F9AA-0F88-4A6F-9169-0A0D6EC3C022"},{"id":"914B41A9-ABE3-4962-8D3F-FD9F4F7344AC","camera":"B6B63CDB-39F0-46DA-83EE-2778BBB3EC48","profile":"automatic","aspect":"Zoom","sortorder":4},{"camera":"F56498F7-0F2B-4168-A60F-8FFE39363DDF","profile":"automatic","aspect":"Zoom","sortorder":5,"id":"D5A452D7-5F4C-40B2-8BB4-18CA3635CD03"},{"id":"4B235104-8B70-4680-A797-4D80CA95ACF9","aspect":"Zoom","sortorder":6,"camera":"26FBDFBE-B1A4-43C7-8A33-A67C77C65E5C","profile":"automatic"},{"aspect":"Zoom","sortorder":7,"id":"D5F29EBB-26AA-44D6-A1A0-C519226FD9FC","camera":"6D17822E-CCD2-4539-A3A1-A5EA3F63DB9D","profile":"automatic"},{"sortorder":8,"profile":"automatic","camera":"E02FDD1D-79F5-45EA-BE13-DB9FEA96358A","aspect":"Zoom","id":"B8867C21-4CF9-4B07-9A77-B30D91D9F1B0"},{"camera":"622510F2-C800-4622-9B1B-1BD908EA03C7","aspect":"Stretch","id":"5A1AB759-8BD1-43C5-AE56-A5849A8841CF","sortorder":9,"profile":"automatic"}],"audioType":"alwaysMuted","expanded":true,"hideControls":false,"id":"FFB09808-BF3B-4386-AE76-BACF89998752","disableAudio":true,"isFavorite":false,"name":"South East","layout":{"layout":"automatic","cycleTime":5,"customLayout":[],"focusCameraOnMotion":false}}],"cameras":[{"username":"","id":"12305CCB-C047-4DBF-B880-491BC1849716","disableAudio":false,"password":"","experimentalMode":false,"isFavorite":false,"iconName":"camera1","url":"https://video-auth1.iol.pt:443/beachcam/bcalmograve/playlist.m3u8","ratio":0.75,"name":"Almograve","rtspStreamType":"default","type":"H264","authenticationEnabled":false,"rotation":0,"transcode":false,"secondaryType":"RTSP"},{"authenticationEnabled":false,"name":"Alvor","password":"","type":"H264","rtspStreamType":"default","rotation":0,"iconName":"camera1","experimentalMode":false,"transcode":false,"id":"223E668D-91BE-4899-8C92-CC6DA5F35AFE","ratio":0.6814946619217082,"url":"https://video-auth1.iol.pt:443/beachcam/alvor/playlist.m3u8","isFavorite":false,"username":"","disableAudio":false},{"username":"","name":"Amado","rotation":0,"isFavorite":false,"authenticationEnabled":false,"id":"E7422E5E-5D98-48CA-9D8B-DEF9FB4BC854","password":"","type":"H264","transcode":false,"disableAudio":false,"ratio":1.302491103202847,"iconName":"camera1","experimentalMode":false,"rtspStreamType":"default","url":"https://video-auth1.iol.pt:443/beachcam/bcamado/playlist.m3u8"},{"url":"https://video-auth1.iol.pt:443/beachcam/bcamoreira/playlist.m3u8","authenticationEnabled":false,"username":"","iconName":"camera1","rotation":0,"rtspStreamType":"default","name":"Amoreira","transcode":false,"isFavorite":false,"type":"H264","id":"0C610800-FDB2-4248-ABF1-133CD3884D6E","password":"","experimentalMode":false,"ratio":1.304270462633452,"disableAudio":false},{"username":"","type":"H264","url":"https://video-auth1.iol.pt:443/beachcam/armacaodepera/playlist.m3u8","disableAudio":false,"iconName":"camera1","id":"B6B63CDB-39F0-46DA-83EE-2778BBB3EC48","rtspStreamType":"default","ratio":0.6814946619217082,"transcode":false,"isFavorite":false,"experimentalMode":false,"password":"","name":"Armação de Pêra","rotation":0,"authenticationEnabled":false},{"type":"H264","experimentalMode":false,"authenticationEnabled":false,"transcode":false,"rotation":0,"disableAudio":true,"name":"Arrifana (Beachcam)","id":"655394D3-CCFA-4E9C-BA58-F6A511084C09","iconName":"camera1","isFavorite":false,"password":"","ratio":1.304270462633452,"url":"https://video-auth1.iol.pt:443/beachcam/arrifana/playlist.m3u8","rtspStreamType":"default","username":""},{"ratio":0.75,"rtspStreamType":"default","iconName":"camera1","id":"6A179F9B-8AB9-440B-AA0F-FF1AD8996853","rotation":0,"authenticationEnabled":false,"type":"H264","disableAudio":false,"username":"","password":"","name":"Carvalhal (Comporta)","transcode":false,"experimentalMode":false,"url":"https://video-auth1.iol.pt:443/beachcam/carvalhal/playlist.m3u8","isFavorite":false},{"transcode":false,"username":"","type":"H264","isFavorite":false,"experimentalMode":false,"rtspStreamType":"default","password":"","authenticationEnabled":false,"secondaryType":"RTSP","url":"https://video-auth1.iol.pt:443/beachcam/bccarvalhalodemira/playlist.m3u8","ratio":0.75,"iconName":"camera1","name":"Carvalhal (Odemira)","id":"39F770A1-231C-483C-B0FC-C61E94250970","disableAudio":false,"rotation":0},{"name":"Carvoeiro","rtspStreamType":"default","ratio":0.6814946619217082,"rotation":0,"url":"https://video-auth1.iol.pt:443/beachcam/carvoeiro/playlist.m3u8","iconName":"camera1","authenticationEnabled":false,"username":"","type":"H264","experimentalMode":false,"disableAudio":false,"isFavorite":false,"password":"","transcode":false,"id":"9810D08B-24AE-4B4A-8F67-885D3A0C6531"},{"secondaryType":"RTSP","rtspStreamType":"default","type":"H264","experimentalMode":false,"isFavorite":false,"name":"Comporta","transcode":false,"rotation":0,"password":"","authenticationEnabled":false,"url":"https://video-auth1.iol.pt:443/beachcam/bccomporta/playlist.m3u8","disableAudio":false,"iconName":"camera1","id":"4DF691A6-7EA8-416A-9E95-26A2BB0D24A9","username":"","ratio":0.75},{"disableAudio":false,"name":"Cordoama","type":"H264","transcode":false,"username":"","iconName":"camera1","ratio":0.75,"rtspStreamType":"default","password":"","rotation":0,"experimentalMode":false,"secondaryType":"RTSP","authenticationEnabled":false,"url":"https://video-auth1.iol.pt:443/beachcam/cordoama/playlist.m3u8","id":"5EB49725-71D8-4588-BE78-3D958E916713","isFavorite":false},{"isFavorite":false,"transcode":false,"ratio":0.3413333333333333,"disableAudio":false,"iconName":"camera1","id":"E02FDD1D-79F5-45EA-BE13-DB9FEA96358A","rotation":0,"name":"Faro","url":"https://video-auth1.iol.pt:443/beachcam/bcfaro/playlist.m3u8","username":"","password":"","type":"H264","authenticationEnabled":false,"experimentalMode":false,"rtspStreamType":"default"},{"iconName":"camera1","url":"https://video-auth1.iol.pt:443/beachcam/furnasmar/playlist.m3u8","disableAudio":false,"rotation":0,"isFavorite":false,"rtspStreamType":"default","ratio":0.75,"id":"0D4AC153-DA92-42C3-A5C0-55E2ED8DDCCF","experimentalMode":false,"transcode":false,"name":"Furnas","username":"","secondaryType":"RTSP","authenticationEnabled":false,"password":"","type":"H264"},{"rotation":0,"password":"","secondaryType":"RTSP","disableAudio":false,"type":"H264","username":"","ratio":0.75,"transcode":false,"iconName":"camera1","name":"Luz","id":"27DAEE32-4680-422F-95CE-9E0C23040636","authenticationEnabled":false,"isFavorite":false,"url":"https://video-auth1.iol.pt:443/beachcam/luz/playlist.m3u8","experimentalMode":false,"rtspStreamType":"default"},{"url":"https://video-auth1.iol.pt:443/beachcam/meiapraia/playlist.m3u8","iconName":"camera1","authenticationEnabled":false,"password":"","rtspStreamType":"default","id":"434E01FF-9F2E-4036-9841-F7378D80EC4D","experimentalMode":false,"disableAudio":false,"username":"","transcode":false,"isFavorite":false,"name":"Meia Praia","rotation":0,"ratio":0.568,"type":"H264"},{"secondaryType":"RTSP","ratio":0.75,"disableAudio":false,"url":"https://video-auth1.iol.pt:443/beachcam/bcfarol/playlist.m3u8","username":"","rtspStreamType":"default","experimentalMode":false,"transcode":false,"rotation":0,"iconName":"camera1","password":"","type":"H264","id":"9A5A8D36-54E2-455B-A600-3EB6E5EE60A1","name":"Milfontes (Farol)","isFavorite":false,"authenticationEnabled":false},{"rotation":0,"name":"Monte Clérigo","id":"8A638D09-3F7C-480E-AD73-144E9ABAF0B6","iconName":"camera1","url":"https://video-auth1.iol.pt:443/beachcam/bcmonteclerigo/playlist.m3u8","authenticationEnabled":false,"username":"","rtspStreamType":"default","disableAudio":false,"transcode":false,"experimentalMode":false,"type":"H264","ratio":1.304270462633452,"isFavorite":false,"password":""},{"name":"Odeceixe","iconName":"camera1","authenticationEnabled":false,"rtspStreamType":"default","id":"8E327046-B697-4EDA-953B-5F03A6638E1B","type":"H264","transcode":false,"url":"https://video-auth1.iol.pt:443/beachcam/bcodeceixe/playlist.m3u8","password":"","isFavorite":false,"rotation":0,"ratio":1.304270462633452,"experimentalMode":false,"username":"","disableAudio":false},{"rtspStreamType":"default","authenticationEnabled":false,"username":"","type":"H264","url":"https://video-auth1.iol.pt:443/beachcam/bcgale/playlist.m3u8","ratio":0.6814946619217082,"transcode":false,"id":"F56498F7-0F2B-4168-A60F-8FFE39363DDF","name":"Praia da Galé","experimentalMode":false,"isFavorite":false,"disableAudio":false,"password":"","rotation":0,"iconName":"camera1"},{"password":"","ratio":0.6814946619217082,"rotation":0,"transcode":false,"authenticationEnabled":false,"experimentalMode":false,"disableAudio":false,"name":"Praia da Rocha","type":"H264","url":"https://video-auth1.iol.pt:443/beachcam/praiadarocha/playlist.m3u8","isFavorite":false,"rtspStreamType":"default","username":"","iconName":"camera1","id":"2A6E958F-9FC9-4B12-A046-AB2943B626C8"},{"secondaryType":"RTSP","password":"","ratio":0.6814946619217082,"disableAudio":false,"url":"https://video-auth1.iol.pt:443/beachcam/bcrochaportimao/playlist.m3u8","iconName":"camera1","id":"622510F2-C800-4622-9B1B-1BD908EA03C7","experimentalMode":false,"rtspStreamType":"default","authenticationEnabled":false,"type":"H264","transcode":false,"name":"Praia da Rocha (Static)","rotation":0,"isFavorite":false,"username":""},{"username":"","iconName":"camera1","rtspStreamType":"default","url":"https://video-auth1.iol.pt:443/beachcam/praiadopeneco/playlist.m3u8","ratio":0.6814946619217082,"transcode":false,"name":"Praia do Peneco","password":"","experimentalMode":false,"rotation":0,"type":"H264","isFavorite":false,"disableAudio":false,"authenticationEnabled":false,"id":"26FBDFBE-B1A4-43C7-8A33-A67C77C65E5C"},{"url":"https://video-auth1.iol.pt:443/beachcam/bcigreja/playlist.m3u8","username":"","rotation":0,"authenticationEnabled":false,"disableAudio":false,"isFavorite":false,"type":"H264","rtspStreamType":"default","ratio":0.6832740213523132,"id":"A670F9AA-0F88-4A6F-9169-0A0D6EC3C022","name":"Praia Nova","password":"","transcode":false,"iconName":"camera1","experimentalMode":false},{"url":"https://video-auth1.iol.pt:443/beachcam/bcsagres/playlist.m3u8","rotation":0,"iconName":"camera1","rtspStreamType":"default","disableAudio":false,"id":"EEE4FF31-19A2-4CA4-8329-DCF380AD3E29","isFavorite":false,"transcode":false,"username":"","password":"","authenticationEnabled":false,"type":"H264","secondaryType":"RTSP","name":"Sagres","ratio":0.75,"experimentalMode":false},{"rtspStreamType":"default","name":"São Torpes","rotation":0,"authenticationEnabled":false,"password":"","transcode":false,"url":"https://video-auth1.iol.pt:443/beachcam/saotorpes/playlist.m3u8","experimentalMode":false,"type":"H264","disableAudio":false,"secondaryType":"RTSP","iconName":"camera1","id":"0B8D9B41-B65B-4A29-881A-C488686C8A6F","isFavorite":false,"username":"","ratio":0.75},{"secondaryType":"RTSP","id":"E72D63FD-8F06-4FAC-9B6E-DDBC51325123","disableAudio":false,"name":"São Torpes (Static)","iconName":"camera1","url":"https://video-auth1.iol.pt:443/beachcam/bcsaotorpes2/playlist.m3u8","password":"","rtspStreamType":"default","rotation":0,"authenticationEnabled":false,"isFavorite":false,"transcode":false,"ratio":0.75,"experimentalMode":false,"type":"H264","username":""},{"rotation":0,"id":"6D17822E-CCD2-4539-A3A1-A5EA3F63DB9D","transcode":false,"iconName":"camera1","disableAudio":false,"type":"H264","ratio":0.6814946619217082,"experimentalMode":false,"name":"Vilamoura","isFavorite":false,"url":"https://video-auth1.iol.pt:443/beachcam/vilamoura/playlist.m3u8","rtspStreamType":"default","password":"","authenticationEnabled":false,"username":""},{"rtspStreamType":"default","password":"","transcode":false,"name":"Zambujeira do Mar","type":"H264","secondaryType":"RTSP","ratio":0.75,"disableAudio":false,"experimentalMode":false,"url":"https://video-auth1.iol.pt:443/beachcam/zambujeira/playlist.m3u8","username":"","rotation":0,"id":"DC2285C8-F581-4D2B-8E90-E609C364B215","iconName":"camera1","authenticationEnabled":false,"isFavorite":false}]}
 
-        // Create a fast lookup map for all cameras using their IDs
         const cameraMap = {};
-        config.cameras.forEach(cam => {
-            cameraMap[cam.id] = cam;
-        });
+        config.cameras.forEach(cam => { cameraMap[cam.id] = cam; });
 
-        // Populate the dropdown selector
         const select = document.getElementById('dashboard-select');
         config.dashboards.forEach(dashboard => {
             const option = document.createElement('option');
@@ -210,38 +197,70 @@
 
         const grid = document.getElementById('grid');
         let activeHlsInstances = [];
+        let currentCameraCount = 0;
 
-        // Load specific dashboard
-        function loadDashboard(dashboardName) {
-            closeFullscreen(); // Exit fullscreen if they selected via header somehow
+        // Dynamic Math to keep Grid perfectly proportioned on Landscape vs Portrait
+        function updateGridLayout() {
+            if (currentCameraCount === 0) return;
+            const isLandscape = window.innerWidth > window.innerHeight;
+            let cols, rows;
 
-            // 1. Clean up old videos to save memory/data
+            if (currentCameraCount === 1) {
+                cols = 1; rows = 1;
+            } else if (currentCameraCount === 2) {
+                if (isLandscape) { cols = 2; rows = 1; }
+                else { cols = 1; rows = 2; }
+            } else if (currentCameraCount === 3 || currentCameraCount === 4) {
+                if (isLandscape) { cols = currentCameraCount; rows = 1; }
+                else { cols = 2; rows = 2; }
+            } else if (currentCameraCount >= 5 && currentCameraCount <= 6) {
+                if (isLandscape) { cols = 3; rows = 2; }
+                else { cols = 2; rows = 3; }
+            } else {
+                // For South East dashboard (10 cameras)
+                if (isLandscape) { cols = 5; rows = 2; }
+                else { cols = 2; rows = 5; }
+            }
+
+            grid.style.setProperty('--cols', cols);
+            grid.style.setProperty('--rows', rows);
+        }
+
+        // Listen for phone rotations
+        window.addEventListener('resize', updateGridLayout);
+
+        function cleanupStreams() {
+            // 1. Teardown Javascript Video Loaders (Desktop fallback)
             activeHlsInstances.forEach(hls => hls.destroy());
             activeHlsInstances = [];
-            grid.innerHTML = '';
 
-            // 2. Find the requested dashboard
+            // 2. Strict Teardown for iOS Native videos (Saves Battery/Bandwidth)
+            const videos = grid.querySelectorAll('video');
+            videos.forEach(video => {
+                video.pause();
+                video.removeAttribute('src'); // Unlink the feed
+                video.load(); // Force the iPhone hardware player to drop the connection
+            });
+
+            // 3. Clear HTML
+            grid.innerHTML = '';
+        }
+
+        function loadDashboard(dashboardName) {
+            closeFullscreen();
+            cleanupStreams(); 
+
             const dashboard = config.dashboards.find(d => d.name === dashboardName);
             if (!dashboard) return;
 
-            // 3. Get the list of cameras and sort them correctly
             const dashboardCameras = dashboard.cameras.sort((a, b) => a.sortorder - b.sortorder);
-            const count = dashboardCameras.length;
+            currentCameraCount = dashboardCameras.length;
+            
+            updateGridLayout(); // Calculate grid immediately before rendering
 
-            // 4. Dynamically calculate grid layout to always fill screen optimally
-            let cols = 2; // Default for mobile layout
-            let rows = Math.ceil(count / cols); 
-
-            if (count === 1) { cols = 1; rows = 1; }
-            else if (count === 2) { cols = 1; rows = 2; } // Stack 2 cameras vertically
-            // Set the CSS variables dynamically
-            grid.style.setProperty('--cols', cols);
-            grid.style.setProperty('--rows', rows);
-
-            // 5. Render cameras
             dashboardCameras.forEach((dashCam, index) => {
-                const camData = cameraMap[dashCam.camera]; // Map to global camera info
-                if (!camData) return; // Skip if config is missing
+                const camData = cameraMap[dashCam.camera]; 
+                if (!camData) return; 
 
                 const card = document.createElement('div');
                 card.className = 'camera-card';
@@ -278,7 +297,6 @@
                 card.appendChild(title);
                 grid.appendChild(card);
 
-                // Video Loading
                 if (video.canPlayType('application/vnd.apple.mpegurl')) {
                     video.src = camData.url;
                 } else if (Hls.isSupported()) {
@@ -288,7 +306,7 @@
                     hls.on(Hls.Events.MANIFEST_PARSED, function() {
                         video.play().catch(e => console.log("Autoplay blocked", e));
                     });
-                    activeHlsInstances.push(hls); // Keep track to destroy later
+                    activeHlsInstances.push(hls); 
                 }
             });
         }
@@ -308,7 +326,7 @@
             }, 300);
         }
 
-        // Initialize with default dashboard
+        // Initialize App
         select.value = "Aljezur";
         loadDashboard("Aljezur");
         
