@@ -17,14 +17,14 @@
         body {
             margin: 0;
             padding: 0;
-            height: 100dvh; 
+            min-height: 100dvh; 
             background-color: var(--bg-color);
             color: var(--text-color);
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             -webkit-font-smoothing: antialiased;
             display: flex;
             flex-direction: column;
-            overflow: hidden; 
+            overflow-x: hidden; /* Prevent horizontal scroll, allow vertical */
         }
 
         /* --- HEADER & DASHBOARD SELECTOR --- */
@@ -32,7 +32,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: calc(env(safe-area-inset-top) + 10px) 10px 10px 10px;
+            padding: calc(env(safe-area-inset-top) + 15px) 10px 15px 10px;
             flex-shrink: 0;
             background-color: var(--bg-color);
             z-index: 10;
@@ -42,7 +42,7 @@
             background-color: #2c2c2e;
             color: white;
             border: 1px solid #3a3a3c;
-            padding: 8px 36px 8px 20px;
+            padding: 10px 40px 10px 20px;
             border-radius: 20px;
             font-size: 1.1rem;
             font-weight: 600;
@@ -50,27 +50,40 @@
             -webkit-appearance: none;
             outline: none;
             cursor: pointer;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
             background-image: url('data:image/svg+xml;utf8,<svg fill="%23ffffff" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
             background-repeat: no-repeat;
-            background-position: right 8px center;
+            background-position: right 12px center;
             max-width: 90%;
             text-align: center;
         }
 
-        /* --- DYNAMIC GRID --- */
+        /* --- DYNAMIC CSS GRID --- */
         .camera-grid {
             display: grid;
-            flex-grow: 1; 
-            /* Variables injected by JS dynamically on rotation */
-            grid-template-columns: repeat(var(--cols, 2), 1fr);
-            grid-template-rows: repeat(var(--rows, 3), 1fr); 
-            gap: 10px;
-            padding: 0 10px calc(env(safe-area-inset-bottom) + 10px) 10px;
+            gap: 12px;
+            padding: 0 12px calc(env(safe-area-inset-bottom) + 20px) 12px;
             box-sizing: border-box;
             max-width: 1200px;
             margin: 0 auto;
             width: 100%;
+            align-content: start; /* Prevents stretching if screen is tall */
+        }
+
+        /* Base Portrait Grid Configurations */
+        .camera-grid[data-count="1"] { grid-template-columns: 1fr; }
+        .camera-grid[data-count="2"] { grid-template-columns: 1fr; }
+        /* Default for 3 or more cameras in portrait */
+        .camera-grid { grid-template-columns: repeat(2, 1fr); } 
+
+        /* Hardware-Level Landscape Grid Adjustments */
+        @media (orientation: landscape) {
+            .camera-grid[data-count="1"] { grid-template-columns: 1fr; }
+            .camera-grid[data-count="2"] { grid-template-columns: repeat(2, 1fr); }
+            .camera-grid[data-count="3"], .camera-grid[data-count="4"] { grid-template-columns: repeat(2, 1fr); }
+            .camera-grid[data-count="5"], .camera-grid[data-count="6"] { grid-template-columns: repeat(3, 1fr); }
+            .camera-grid[data-count="7"], .camera-grid[data-count="8"], 
+            .camera-grid[data-count="9"], .camera-grid[data-count="10"] { grid-template-columns: repeat(4, 1fr); }
         }
 
         .camera-card {
@@ -83,6 +96,7 @@
             justify-content: center;
             cursor: pointer;
             transition: opacity 0.2s ease;
+            aspect-ratio: 16 / 9; /* Ensures videos always stay perfectly proportioned */
         }
 
         video {
@@ -124,7 +138,10 @@
         }
 
         /* --- FULL SCREEN MODE STYLES --- */
-        body.fullscreen-mode { background-color: #000; }
+        body.fullscreen-mode { 
+            background-color: #000; 
+            overflow: hidden; /* Lock background scrolling when in fullscreen */
+        }
         body.fullscreen-mode .header { display: none; }
         body.fullscreen-mode .camera-card:not(.active-fullscreen) { display: none; }
         
@@ -135,6 +152,7 @@
             width: 100vw;
             height: 100dvh;
             border-radius: 0;
+            aspect-ratio: auto; /* Remove 16:9 ratio to fill the actual screen */
             z-index: 999;
             cursor: default;
         }
@@ -197,52 +215,20 @@
 
         const grid = document.getElementById('grid');
         let activeHlsInstances = [];
-        let currentCameraCount = 0;
-
-        // Dynamic Math to keep Grid perfectly proportioned on Landscape vs Portrait
-        function updateGridLayout() {
-            if (currentCameraCount === 0) return;
-            const isLandscape = window.innerWidth > window.innerHeight;
-            let cols, rows;
-
-            if (currentCameraCount === 1) {
-                cols = 1; rows = 1;
-            } else if (currentCameraCount === 2) {
-                if (isLandscape) { cols = 2; rows = 1; }
-                else { cols = 1; rows = 2; }
-            } else if (currentCameraCount === 3 || currentCameraCount === 4) {
-                if (isLandscape) { cols = currentCameraCount; rows = 1; }
-                else { cols = 2; rows = 2; }
-            } else if (currentCameraCount >= 5 && currentCameraCount <= 6) {
-                if (isLandscape) { cols = 3; rows = 2; }
-                else { cols = 2; rows = 3; }
-            } else {
-                // For South East dashboard (10 cameras)
-                if (isLandscape) { cols = 5; rows = 2; }
-                else { cols = 2; rows = 5; }
-            }
-
-            grid.style.setProperty('--cols', cols);
-            grid.style.setProperty('--rows', rows);
-        }
-
-        // Listen for phone rotations
-        window.addEventListener('resize', updateGridLayout);
 
         function cleanupStreams() {
-            // 1. Teardown Javascript Video Loaders (Desktop fallback)
+            // Teardown Desktop instances
             activeHlsInstances.forEach(hls => hls.destroy());
             activeHlsInstances = [];
 
-            // 2. Strict Teardown for iOS Native videos (Saves Battery/Bandwidth)
+            // True cleanup for iOS Native streams
             const videos = grid.querySelectorAll('video');
             videos.forEach(video => {
                 video.pause();
-                video.removeAttribute('src'); // Unlink the feed
-                video.load(); // Force the iPhone hardware player to drop the connection
+                video.removeAttribute('src'); 
+                video.load(); 
             });
 
-            // 3. Clear HTML
             grid.innerHTML = '';
         }
 
@@ -254,9 +240,9 @@
             if (!dashboard) return;
 
             const dashboardCameras = dashboard.cameras.sort((a, b) => a.sortorder - b.sortorder);
-            currentCameraCount = dashboardCameras.length;
             
-            updateGridLayout(); // Calculate grid immediately before rendering
+            // Set data attribute so CSS handles the orientation grid mathematically
+            grid.setAttribute('data-count', dashboardCameras.length);
 
             dashboardCameras.forEach((dashCam, index) => {
                 const camData = cameraMap[dashCam.camera]; 
@@ -287,7 +273,7 @@
 
                 card.addEventListener('click', () => {
                     if (document.body.classList.contains('fullscreen-mode')) return;
-                    window.scrollTo(0, 0); 
+                    // Removed window.scrollTo(0,0) so user doesn't lose scroll position!
                     document.body.classList.add('fullscreen-mode');
                     card.classList.add('active-fullscreen');
                 });
